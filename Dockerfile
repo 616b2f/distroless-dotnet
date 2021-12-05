@@ -43,37 +43,37 @@ FROM debian:10-slim as build
 # libunistring2 \
 
 RUN cd /tmp && \
-		apt-get update && \
-		apt-get install -y --no-install-recommends \
-				# install only deps 
-				curl \
-				ca-certificates \
-				openssl \
-				&& \
-		apt-get download \
-				# ca-certificates \
-				\
-				# .NET Core dependencies
-				libc6 \
-				libgcc1 \
-				libgssapi-krb5-2 \
-				libicu63 \
-				libssl1.1 \
-				libstdc++6 \
-				zlib1g \
-				&& \
-		mkdir -p /dpkg/var/lib/dpkg/status.d/ && \
-		for deb in *.deb; do \
-				package_name=$(dpkg-deb -I ${deb} | awk '/^ Package: .*$/ {print $2}'); \ 
-				echo "Process: ${package_name}"; \
-				dpkg --ctrl-tarfile $deb | tar -Oxf - ./control > /dpkg/var/lib/dpkg/status.d/${package_name}; \
-				dpkg --extract $deb /dpkg || exit 10; \
-		done 
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        # install only deps
+        curl \
+        ca-certificates \
+        openssl \
+        && \
+    apt-get download \
+        # ca-certificates \
+        \
+        # .NET Core dependencies
+        libc6 \
+        libgcc1 \
+        libgssapi-krb5-2 \
+        libicu63 \
+        libssl1.1 \
+        libstdc++6 \
+        zlib1g \
+        && \
+    mkdir -p /dpkg/var/lib/dpkg/status.d/ && \
+    for deb in *.deb; do \
+        package_name=$(dpkg-deb -I ${deb} | awk '/^ Package: .*$/ {print $2}'); \ 
+        echo "Process: ${package_name}"; \
+        dpkg --ctrl-tarfile $deb | tar -Oxf - ./control > /dpkg/var/lib/dpkg/status.d/${package_name}; \
+        dpkg --extract $deb /dpkg || exit 10; \
+    done
 
 # remove not needed files extracted from deb packages like man pages and docs etc.
 RUN find /dpkg/ -type d -empty -delete && \
-		rm -r /dpkg/usr/share/doc/
-    
+    rm -r /dpkg/usr/share/doc/
+
 # Retrieve .NET runtime
 RUN curl -SL --output dotnet.tar.gz https://dotnetcli.azureedge.net/dotnet/Runtime/6.0.0/dotnet-runtime-6.0.0-linux-x64.tar.gz \
     && dotnet_sha512='7cc8d93f9495b516e1b33bf82af3af605f1300bcfeabdd065d448cc126bd97ab4da5ec5e95b7775ee70ab4baf899ff43671f5c6f647523fb41cda3d96f334ae5' \
@@ -96,7 +96,7 @@ COPY --from=build ["/dpkg/", "/"]
 FROM runtime-deps as runtime
 ENV \
     # .NET runtime version
-		DOTNET_VERSION=6.0.0 \
+    DOTNET_VERSION=6.0.0 \
     # Enable detection of running in a container
     DOTNET_RUNNING_IN_CONTAINER=true \
     # Set the default console formatter to JSON
