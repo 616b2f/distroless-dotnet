@@ -42,6 +42,13 @@ FROM debian:10-slim as build
 # libicu63 \
 # libunistring2 \
 
+# microsoft docs to debian dependencies
+#https://docs.microsoft.com/en-us/dotnet/core/install/linux-debian#dependencies
+# docs for self contained dependencies
+#https://github.com/dotnet/core/blob/main/Documentation/self-contained-linux-apps.md
+# distroless PR to drop dotnet (there are also important infos)
+#https://github.com/GoogleContainerTools/distroless/pull/711/files
+
 RUN cd /tmp && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
