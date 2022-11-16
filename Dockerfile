@@ -49,6 +49,8 @@ FROM debian:10-slim as build
 # distroless PR to drop dotnet (there are also important infos)
 #https://github.com/GoogleContainerTools/distroless/pull/711/files
 
+# more infos to how extract for the CVE scan relevant parts from deb packages
+# see https://github.com/GoogleContainerTools/distroless/issues/863
 RUN cd /tmp && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
