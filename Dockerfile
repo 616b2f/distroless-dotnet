@@ -43,11 +43,11 @@ FROM debian:11-slim as build
 # libunistring2 \
 
 # microsoft docs to debian dependencies
-#https://docs.microsoft.com/en-us/dotnet/core/install/linux-debian#dependencies
+# https://docs.microsoft.com/en-us/dotnet/core/install/linux-debian#dependencies
 # docs for self contained dependencies
-#https://github.com/dotnet/core/blob/main/Documentation/self-contained-linux-apps.md
+# https://github.com/dotnet/core/blob/main/Documentation/self-contained-linux-apps.md
 # distroless PR to drop dotnet (there are also important infos)
-#https://github.com/GoogleContainerTools/distroless/pull/711/files
+# https://github.com/GoogleContainerTools/distroless/pull/711/files
 
 # more infos to how extract for the CVE scan relevant parts from deb packages
 # see https://github.com/GoogleContainerTools/distroless/issues/863
@@ -64,9 +64,9 @@ RUN cd /tmp && \
         \
         # .NET Core dependencies
         libc6 \
-        libgcc1 \
+        libgcc-s1 \
         libgssapi-krb5-2 \
-        libicu63 \
+        libicu67 \
         libssl1.1 \
         libstdc++6 \
         zlib1g \
