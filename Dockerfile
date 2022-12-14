@@ -1,4 +1,4 @@
-FROM debian:10-slim as build
+FROM debian:11-slim as build
 
 # libgssapi-krb5-2 \
 # liblttng-ust0 \
@@ -101,7 +101,7 @@ RUN aspnet_version='6.0.12' \
     && tar -ozxf aspnetcore.tar.gz -C /aspnet \
     && rm aspnetcore.tar.gz
 
-FROM gcr.io/distroless/cc-debian10 as runtime-deps
+FROM gcr.io/distroless/cc-debian11 as runtime-deps
 COPY --from=build ["/dpkg/", "/"]
 
 FROM runtime-deps as runtime
