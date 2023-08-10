@@ -84,8 +84,8 @@ RUN find /dpkg/ -type d -empty -delete && \
     rm -r /dpkg/usr/share/doc/
 
 # Retrieve .NET runtime
-RUN dotnet_version='6.0.20' \
-    && dotnet_sha512='3688d7170a59015c36d6a5532db67bc22eff66b3eb0a7fc28e1f425791e27a5f467bc7dc593d7f455d72d08c7d27bfcc92b3c8bd30ec3c7c583a8aa82b5afbac' \
+RUN dotnet_version='6.0.21' \
+    && dotnet_sha512='9b1573f7a42d6c918447b226fda4173b7db891a7290b51ce36cf1c1583f05643a3dda8a13780b5996caa2af36719a910377e71149f538a6fa30c624b8926e0cd' \
     && curl -SL --output dotnet.tar.gz https://dotnetcli.azureedge.net/dotnet/Runtime/$dotnet_version/dotnet-runtime-$dotnet_version-linux-x64.tar.gz \
     && echo "$dotnet_sha512  dotnet.tar.gz" | sha512sum -c - \
     && mkdir -p /dotnet \
@@ -93,8 +93,8 @@ RUN dotnet_version='6.0.20' \
     && rm dotnet.tar.gz
 
 # Retrieve ASP.NET Core
-RUN aspnet_version='6.0.20' \
-    && aspnetcore_sha512='891bad6a52a7bcd5afa2a784fe68044d282f6d53fedab4bde6dff8d7d2138a484e947f7a6be156094324b37e9d7e07e87a67622bcf2ea197c2924389edd1d185' \
+RUN aspnet_version='6.0.21' \
+    && aspnetcore_sha512='3a74b52e340653822ad5120ec87e00e4bc0217e8ce71020ad9c4a0903b87d221b538c3841949be2ca129a45f8105def0ea5152e44e7cef8858958ae04fa0dd65' \
     && curl -SL --output aspnetcore.tar.gz https://dotnetcli.azureedge.net/dotnet/aspnetcore/Runtime/$aspnet_version/aspnetcore-runtime-$aspnet_version-linux-x64.tar.gz \
     && echo "$aspnetcore_sha512  aspnetcore.tar.gz" | sha512sum -c - \
     && mkdir -p /aspnet \
@@ -107,7 +107,7 @@ COPY --from=build ["/dpkg/", "/"]
 FROM runtime-deps as runtime
 ENV \
     # .NET runtime version
-    DOTNET_VERSION=6.0.20 \
+    DOTNET_VERSION=6.0.21 \
     # Enable detection of running in a container
     DOTNET_RUNNING_IN_CONTAINER=true \
     # Set the default console formatter to JSON
@@ -119,5 +119,5 @@ ENV \
     # Configure web servers to bind to port 8080 (to be able to run as nonroot)
     ASPNETCORE_URLS=http://+:8080 \
     # ASP.NET Core version
-    ASPNET_VERSION=6.0.20
+    ASPNET_VERSION=6.0.21
 COPY --from=build ["/aspnet", "/usr/share/dotnet"]
